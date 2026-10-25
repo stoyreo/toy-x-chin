@@ -1,0 +1,459 @@
+/* ui.css: shared design tokens and Phase 0-2 foundations */
+
+:root {
+  /* Colors */
+  --text: #ffffff;
+  --text-2: #c8c8d4;
+  --surface: #16161c;
+  --surface-2: #1f1f27;
+  --line: #2a2a33;
+  --muted: #8a8a99;
+  --me: #b26bff;
+  --together: #3dff9a;
+  --them: #3dd9ff;
+  --success: #3dff9a;
+  --warn: #ffb13d;
+  --danger: #ff6b6b;
+  --tab-idle: #8a8a99;
+  --focus: #b26bff;
+
+  /* Border radii */
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 20px;
+  --r-xl: 28px;
+
+  /* Font sizes */
+  --fs-xs: 11px;
+  --fs-sm: 13px;
+  --fs-base: 15px;
+  --fs-lg: 17px;
+  --fs-xl: 22px;
+  --fs-2xl: 32px;
+  --fs-3xl: 44px;
+
+  /* Line heights */
+  --lh-body: 1.4;
+  --lh-thai: 1.6;
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 16px;
+  --space-xl: 24px;
+  --space-2xl: 32px;
+
+  /* Hit target */
+  --hit: 44px;
+
+  /* Elevation */
+  --e-1: 0 2px 8px rgba(0, 0, 0, 0.32);
+  --e-2: 0 4px 16px rgba(0, 0, 0, 0.48);
+  --e-3: 0 8px 32px rgba(0, 0, 0, 0.64);
+
+  /* Blur */
+  --blur-sheet: 20px;
+  --blur-header: 24px;
+
+  /* Z-index scale */
+  --z-screen: 800;
+  --z-sheet: 950;
+  --z-menu: 1000;
+  --z-toast: 1100;
+  --z-modal: 1200;
+  --z-max: 1900;
+
+  /* Motion */
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --dur-fast: 150ms;
+  --dur-base: 300ms;
+  --dur-slow: 500ms;
+}
+
+/* P0-2: Allow pinch-zoom */
+html {
+  width: 100%;
+  height: 100%;
+}
+
+@viewport {
+  width: device-width;
+  initial-scale: 1;
+  viewport-fit: cover;
+  zoom: 1;
+  user-zoom: zoom;
+}
+
+/* P0-3: Focus visible ring */
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 1px;
+}
+
+/* P0-4: Reduced motion baseline */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* P0-5: Minimum text size and hit area baseline */
+html body {
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+html body input[type="text"],
+html body input[type="email"],
+html body input[type="password"],
+html body input[type="search"],
+html body input[type="tel"],
+html body input[type="url"],
+html body textarea,
+html body select {
+  font-size: 16px;
+}
+
+html body .tab {
+  color: var(--tab-idle);
+}
+
+/* P0-6: 44px hit areas via pseudo-elements */
+html body button,
+html body a[role="button"],
+html body .tab {
+  position: relative;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+html body button::after,
+html body a[role="button"]::after,
+html body .tab::after {
+  content: "";
+  position: absolute;
+  inset: 50%;
+  width: max(44px, 100%);
+  height: max(44px, 100%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+html body button,
+html body a[role="button"],
+html body .tab {
+  pointer-events: auto;
+}
+
+/* P0-11: Thai text line-height */
+html body[lang="th"],
+html body.th {
+  --lh-body: 1.6;
+  line-height: 1.6;
+}
+
+/* P1-2: Same z-index layer for all screens */
+html body :is(.chat-screen,#todo,#steps,.ex-screen,#weather) {
+  z-index: var(--z-screen);
+}
+
+html body .overlay.menu {
+  z-index: var(--z-sheet);
+}
+
+/* P1-4: Sheet styling (unified look across sq-sheet, ex-sheet, overlay.menu) */
+html body :is(.sq-sheet .card, .ex-sheet, .menu-card) {
+  position: relative;
+  box-shadow: var(--e-3);
+  -webkit-backdrop-filter: blur(var(--blur-sheet));
+  backdrop-filter: blur(var(--blur-sheet));
+}
+
+html body .sq-sheet .card {
+  border-radius: var(--r-xl) var(--r-xl) 0 0;
+}
+
+html body :is(.ex-sheet, .menu-card) {
+  border-radius: var(--r-xl);
+}
+
+html body :is(.sq-sheet, .ex-sheetbg, .overlay.menu) {
+  background: #000a;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+/* Grabber for swipe-to-dismiss (P1-3) */
+html body .ui-grab {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 24px;
+  margin: -8px 0 4px;
+  padding: 0;
+  background: none;
+  border: none;
+  touch-action: none;
+  cursor: grab;
+}
+
+html body .ui-grab::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 9px;
+  width: 36px;
+  height: 4px;
+  margin-left: -18px;
+  border-radius: 2px;
+  background: #ffffff40;
+}
+
+/* P1-5: Radius and elevation alignment */
+html body :is(.btn, .sq-btn, .ex-btn, .menu-item, .field, .ex-field, .tile, .act, .gmaps, .ex-row, .ex-menuitem, .sq-src, .sq-item) {
+  border-radius: var(--r-md);
+}
+
+html body :is(.sq-card, .ex-card, .sq-buddy, .trip-banner) {
+  border-radius: var(--r-lg);
+}
+
+html body .panel {
+  border-radius: var(--r-xl);
+}
+
+html body :is(.sq-card, .ex-card, .panel) {
+  box-shadow: var(--e-2);
+}
+
+html body :is(.ex-row, .tile, .act) {
+  box-shadow: var(--e-1);
+}
+
+/* P2-1: Icon sprite styling */
+html body .ic {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+}
+
+html body svg.ic {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+/* P2-3: Panel snap states */
+html body .panel {
+  transition: height 300ms var(--ease);
+  overflow-y: auto;
+}
+
+html body .panel[data-snap="peek"] {
+  height: 120px;
+}
+
+html body .panel[data-snap="half"] {
+  height: 50vh;
+}
+
+html body .panel[data-snap="full"] {
+  height: 80vh;
+}
+
+html body .panel[data-snap="peek"] .insights,
+html body .panel[data-snap="peek"] .linkrow {
+  display: none;
+}
+
+/* P2-4: Segmented control styling */
+.sq-segments {
+  display: flex;
+  gap: 8px;
+  padding: 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.sq-seg {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid var(--muted);
+  border-radius: var(--r-md);
+  background: transparent;
+  color: var(--text-2);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 150ms var(--ease);
+}
+
+.sq-seg.active {
+  border-color: var(--focus);
+  background: var(--focus);
+  color: #000;
+}
+
+#steps.sq-hidden * {
+  animation-play-state: paused !important;
+}
+
+#steps.sq-hidden {
+  pointer-events: none;
+}
+
+/* P2-5: Expenses hero card */
+.ex-hero {
+  padding: 20px 16px;
+  background: linear-gradient(135deg, var(--me), var(--together));
+  border-radius: var(--r-lg);
+  color: #fff;
+  margin: 16px;
+  box-shadow: var(--e-2);
+}
+
+.ex-hero-value {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.ex-hero-label {
+  font-size: 13px;
+  opacity: 0.9;
+  margin-bottom: 12px;
+}
+
+.ex-hero-target {
+  font-size: 12px;
+  opacity: 0.8;
+  margin-bottom: 8px;
+}
+
+.ex-hero-delta {
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.ex-hero-delta.down {
+  color: #3dff9a;
+}
+
+.ex-hero-delta.up {
+  color: #ff6b6b;
+}
+
+.ex-hero-sparkline {
+  width: 100%;
+  height: 30px;
+  stroke: currentColor;
+  opacity: 0.7;
+}
+
+/* P2-6: Swipe-to-delete styling */
+.ex-row {
+  transition: transform 300ms var(--ease), opacity 300ms var(--ease);
+}
+
+.ex-undo-snackbar {
+  position: fixed;
+  bottom: 60px;
+  left: 16px;
+  right: 16px;
+  padding: 12px 16px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  box-shadow: var(--e-2);
+  z-index: var(--z-toast);
+  animation: slideUp 300ms var(--ease);
+}
+
+.ex-undo-btn {
+  margin-left: 16px;
+  padding: 6px 12px;
+  background: var(--focus);
+  color: #fff;
+  border: none;
+  border-radius: var(--r-sm);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* P2-7: Frequent categories */
+.ex-category-picker {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ex-categories-frequent {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 8px;
+}
+
+.ex-category-btn {
+  padding: 10px 12px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 150ms var(--ease);
+}
+
+.ex-category-btn:active {
+  background: var(--focus);
+  color: #fff;
+}
+
+.ex-category-more {
+  padding: 12px;
+  background: transparent;
+  border: 2px dashed var(--muted);
+  border-radius: var(--r-md);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.ex-category-more:active {
+  border-color: var(--focus);
+  color: var(--focus);
+}

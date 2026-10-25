@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Toy x Chin: location, chat, together">
+  <meta name="theme-color" content="#16161c">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Toy x Chin">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icon-192.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/extras.css">
+  <link rel="stylesheet" href="/todo.css">
+  <link rel="stylesheet" href="/ui.css">
+  <title>Toy x Chin</title>
+</head>
+<body data-page="main" data-version="2026.10.24-19">
+  <div id="app" role="application" aria-label="Toy x Chin">
+    <!-- SVG Icon Sprite for Phase 2 -->
+    <svg style="display:none" aria-hidden="true"><use href="/icons.svg"/></svg>
+
+    <!-- Header -->
+    <header class="header">
+      <h1 class="header-title">Toy x Chin</h1>
+    </header>
+
+    <!-- Map Screen -->
+    <div id="map" class="screen open"></div>
+
+    <!-- Chat Screen -->
+    <div id="chat" class="screen chat-screen"></div>
+
+    <!-- To-do Screen -->
+    <div id="todo" class="screen"></div>
+
+    <!-- Steps Screen -->
+    <div id="steps" class="screen"></div>
+
+    <!-- Expenses Screen -->
+    <div id="expenses" class="screen ex-screen"></div>
+
+    <!-- Weather Screen -->
+    <div id="weather" class="screen"></div>
+
+    <!-- Tab Bar with P2-2 restructure: [Map, Chat, Together, You] -->
+    <nav class="tabbar" aria-label="Screens">
+      <button id="tab-map" class="tab active" aria-label="Map" aria-current="page">
+        <svg class="ic"><use href="#icon-map"/></svg>
+        <span data-i18n="tab.map">Map</span>
+      </button>
+      <button id="tab-chat" class="tab" aria-label="Chat">
+        <svg class="ic"><use href="#icon-chat"/></svg>
+        <span data-i18n="tab.chat">Chat</span>
+        <i id="tab-unread" class="badge" hidden>0</i>
+      </button>
+      <button id="tab-together" class="tab" aria-label="Together">
+        <svg class="ic"><use href="#icon-category"/></svg>
+        <span>Together</span>
+      </button>
+      <button id="tab-you" class="tab" aria-label="You">
+        <svg class="ic"><use href="#icon-settings"/></svg>
+        <span>You</span>
+      </button>
+    </nav>
+
+    <!-- Panel (for map) -->
+    <div id="panel" class="panel" data-snap="peek">
+      <button class="ui-grab"></button>
+      <div id="status-pill" class="status-pill"></div>
+      <div class="insights"></div>
+      <div class="linkrow"></div>
+    </div>
+  </div>
+
+  <!-- Scripts in order -->
+  <script src="/app.js"></script>
+  <script src="/map-style.js"></script>
+  <script src="/panel.js"></script>
+  <script src="/todo.js"></script>
+  <script src="/todo-boot.js"></script>
+  <script src="/todo-ai.js"></script>
+  <script src="/tweaks.js"></script>
+  <script src="/chatfix.js"></script>
+  <script src="/chatpet.js"></script>
+  <script src="/call.js"></script>
+  <script src="/notify.js"></script>
+  <script src="/about.js"></script>
+
+  <!-- Phase 0 & 1 -->
+  <script type="module" src="/ui.js"></script>
+  <script type="module" src="/nav.js"></script>
+  <script type="module" src="/sheets.js"></script>
+
+  <!-- Phase 2 -->
+  <script type="module" src="/panel-snap.js"></script>
+
+  <script src="/i18n.js"></script>
+  <script src="/config.js"></script>
+  <script src="/expenses.js"></script>
+  <script src="/weather.js"></script>
+  <script src="/steps.js"></script>
+  <script src="/steps-core.js"></script>
+  <script src="/steps-art.js"></script>
+  <script src="/body.js"></script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(() => {});
+    }
+  </script>
+</body>
+</html>
